@@ -1,0 +1,13 @@
+jenkins_master:
+  image: 543816070942.dkr.ecr.us-east-1.amazonaws.com/atit-ecr-repo:v1
+ cpu_shares: 10
+ mem_limit: 512M
+ ports:
+  - "8080:8080"
+  - "50000:50000"
+# volumes_from: ['jenkins_volume']
+# jenkins_volume:
+# image: jenkins-volume
+# cpu_shares: 10
+# mem_limit: 500M
+

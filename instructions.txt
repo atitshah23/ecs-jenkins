@@ -1,0 +1,27 @@
+Instructions:
+
+- Create the cluster on AWS
+   aws ecs create-cluster --cluster-name "ecs-cli-demo"
+
+- Confgiure ecs-cli  (its ecs-cli not aws-cli, there's another setup for ecs-cli)
+   ecs-cli configure --region us-east-1 --cluster ecs-cli-demo 
+
+- Create the ecr repo on AWS
+   aws ecr create-repository --repository-name jenkins-master
+  
+- Get login to ecr rep created in previous step on AWS
+   aws ecr get-login --no-include-email --region us-east-1
+
+- Copy the string generated from above command and hit enter to login to ecr to pull/push the image
+
+- Build the jenkins-master docker image using file jenkins-master-dockerfile
+   docker build -t jenkins-master: -f jenkins-master-dockerfile .
+   
+- Tag your jenkins-master image
+   docker tag jenkins-master:latest AWS-ACCOUNT-NUMBER.dkr.ecr.us-east-1.amazonaws.com/jenkins-master:latest
+
+- Push the tagged docker image.
+   docker push AWS-ACCOUNT-NUMBER.dkr.ecr.us-east-1.amazonaws.com/jenkins-master:latest
+  
+- Create the ecs-compose file and start the service
+   ecs-cli compose --file ecs-jenkins-compose.yml service up
